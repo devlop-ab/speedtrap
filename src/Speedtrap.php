@@ -19,6 +19,8 @@ final class Speedtrap
 
     private int $threshold;
 
+    private ?int $timeTaken;
+
     /**
      * Create a new Speedtrap instance
      *
@@ -34,32 +36,14 @@ final class Speedtrap
         $this->inputName = $inputName;
 
         $this->threshold = $threshold;
+
+        $this->timeTaken = $this->calculateTimeTaken();
     }
 
     /**
-     * If the speedtrap is triggered, the speedtrap is
-     * considered to be triggered if the value is either
-     * an invalid timestamp or not older than threshold
+     * Calculate the time taken
      */
-    public function triggered() : bool
-    {
-        $timeTaken = $this->timeTaken();
-
-        if ($timeTaken === null) {
-            // unknown duration, input is either missing or being
-            // tampered with, treat this as being triggered
-            return true;
-        }
-
-        return $timeTaken < $this->threshold
-            ? true // the request was made quicker than allowed, the speedtrap was triggered
-            : false;
-    }
-
-    /**
-     * Number of seconds that it took the user to submit the form
-     */
-    public function timeTaken() : ?int
+    private function calculateTimeTaken() : ?int
     {
         $value = $this->value();
 
@@ -83,5 +67,33 @@ final class Speedtrap
         return is_numeric($value)
             ? (string) $value
             : null;
+    }
+
+    /**
+     * Number of seconds that it took the user to submit the form
+     */
+    public function timeTaken() : ?int
+    {
+        return $this->timeTaken;
+    }
+
+    /**
+     * If the speedtrap is triggered, the speedtrap is
+     * considered to be triggered if the value is either
+     * an invalid timestamp or not older than threshold
+     */
+    public function triggered() : bool
+    {
+        $timeTaken = $this->timeTaken();
+
+        if ($timeTaken === null) {
+            // unknown duration, input is either missing or being
+            // tampered with, treat this as being triggered
+            return true;
+        }
+
+        return $timeTaken < $this->threshold
+            ? true // the request was made quicker than allowed, the speedtrap was triggered
+            : false;
     }
 }
