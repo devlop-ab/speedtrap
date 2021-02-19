@@ -7,15 +7,17 @@
 
 Simple speedtrap honeypot made for Laravel FormRequest that detects spam bots by measuring the time it took to submit the form.
 
-# Install
+# Installation
 
-```composer require devlop/speedtrap```
+```
+composer require devlop/speedtrap
+```
 
-**Publish the config** *(optional)*
+If you wish to change any of the speedtrap configuration (such as the default threshold of 5 seconds) you can publish the config, but this is usually not needed.
 
-Not really needed unless you want to change the default threshold (5 seconds).
-
-```php artisan vendor:publish --provider="Devlop\Speedtrap\SpeedtrapServiceProvider"```
+```
+php artisan vendor:publish --provider="Devlop\Speedtrap\SpeedtrapServiceProvider"
+```
 
 # Usage
 
