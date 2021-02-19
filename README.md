@@ -13,7 +13,7 @@ Simple speedtrap honeypot made for Laravel FormRequest that detects spam bots by
 composer require devlop/speedtrap
 ```
 
-If you wish to change any of the speedtrap configuration (such as the default threshold of 5 seconds) you can publish the config, but this is usually not needed.
+If you wish to change any of the speedtrap configuration options (such as the default threshold of 5 seconds or component name) you can publish the config, but this is usually not needed.
 
 ```
 php artisan vendor:publish --provider="Devlop\Speedtrap\SpeedtrapServiceProvider"
@@ -32,14 +32,35 @@ use Illuminate\Foundation\Http\FormRequest;
 class DemoRequest extends FormRequest
 {
     use WithSpeedtrap;
-
 ```
 
-Next, you need to configure the validation, it can either be automatic or manual.
+Next you need to add the speedtrap to your form.
+
+```html
+<form method="POST" action="/">
+    <x-speedtrap />
+
+    ... all your other form contents
+</form>
+```
+
+Optionally you can add a message to show when the speedtrap was triggered, this only works when using automatic validation.
+
+```html
+<form method="POST" action="/">
+    <x-speedtrap>
+        <p>Slow down there muchacho!</p>
+    </x-speedtrap>
+
+    ... all your other form contents
+</form>
+```
+
+Lastly, you need to configure the validation, it can either be automatic or manual.
 
 ## Automatic validation
 
-Add the speedtrap rules to your rules configuration, this will make it redirect back to the form, as any other form validation error.
+Add the speedtrap rules to your rules configuration, this will make it redirect back to the form when triggered, as any other form validation error.
 
 ```php
     /**
