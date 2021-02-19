@@ -78,6 +78,7 @@ maybe you want to silently ignore it and give the spammer the impression of succ
 ```php
 namespace App\Http\Controllers;
 
+use App\Requests\DemoRequest;
 use Illuminate\Http\Request;
 
 class DemoController
